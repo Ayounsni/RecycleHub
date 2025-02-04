@@ -1,0 +1,77 @@
+<form [formGroup]="userForm" (ngSubmit)="addUser()">
+    <!-- Email -->
+    <div>
+      <label>Email :</label>
+      <input type="email" formControlName="email" />
+      <div *ngIf="userForm.get('email')?.hasError('required')">Email est requis.</div>
+      <div *ngIf="userForm.get('email')?.hasError('email')">Email invalide.</div>
+    </div>
+  
+    <!-- Mot de passe -->
+    <div>
+      <label>Mot de passe :</label>
+      <input type="password" formControlName="password" />
+      <div *ngIf="userForm.get('password')?.hasError('required')">Mot de passe requis.</div>
+      <div *ngIf="userForm.get('password')?.hasError('minlength')">6 caractères minimum.</div>
+    </div>
+  
+    <!-- Prénom -->
+    <div>
+      <label>Prénom :</label>
+      <input type="text" formControlName="firstName" />
+    </div>
+  
+    <!-- Nom -->
+    <div>
+      <label>Nom :</label>
+      <input type="text" formControlName="lastName" />
+    </div>
+  
+    <!-- Adresse -->
+    <div>
+      <label>Adresse :</label>
+      <input type="text" formControlName="address" />
+    </div>
+  
+    <!-- Téléphone -->
+    <div>
+      <label>Téléphone :</label>
+      <input type="text" formControlName="phone" />
+    </div>
+  
+    <!-- Date de naissance -->
+    <div>
+      <label>Date de naissance :</label>
+      <input type="date" formControlName="birthDate" />
+    </div>
+  
+    <!-- Rôle -->
+    <div>
+      <label>Rôle :</label>
+      <select formControlName="role">
+        <option value="user">Particulier</option>
+        <option value="collector">Collecteur</option>
+      </select>
+    </div>
+  
+    <!-- Ville -->
+    <div>
+      <label>Ville :</label>
+      <input type="text" formControlName="city" />
+    </div>
+  
+    <!-- Points -->
+    <div>
+      <label>Points :</label>
+      <input type="number" formControlName="points" />
+    </div>
+  
+    <!-- Bouton de soumission -->
+    <button type="submit" [disabled]="userForm.invalid">Ajouter</button>
+  </form>
+  
+  <!-- Liste des utilisateurs -->
+  <div *ngFor="let user of users">
+    <p>{{ user.firstName }} {{ user.lastName }} - {{ user.email }}</p>
+    <button (click)="deleteUser(user.id)">Supprimer</button>
+  </div>
