@@ -325,6 +325,65 @@
   </div>
 </main>
 
+<!-- src/
+├── app/
+│   ├── features/                      # Dossiers par fonctionnalité
+│   │   ├── auth/                      # Authentification
+│   │   │   ├── login/                 # Composant standalone
+│   │   │   │   ├── login.component.ts
+│   │   │   │   ├── login.component.html
+│   │   │   │   └── login.routes.ts    # Routing local (si nécessaire)
+│   │   │   │
+│   │   │   └── register/              # Composant standalone
+│   │   │       ├── register.component.ts
+│   │   │       └── register.component.html
+│   │   │
+│   │   ├── requests/                  # Gestion des demandes
+│   │   │   ├── create-request/
+│   │   │   ├── list-requests/
+│   │   │   └── request-details/
+│   │   │
+│   │   ├── collector/                 # Interface collecteur
+│   │   │   ├── dashboard/
+│   │   │   └── collect-process/
+│   │   │
+│   │   └── points/                    # Système de points
+│   │       ├── points-converter/
+│   │       └── points-history/
+│   │
+│   ├── core/                          # Services/Utils globaux
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts          # Guard standalone
+│   │   ├── interceptors/
+│   │   │   └── auth.interceptor.ts
+│   │   └── services/
+│   │       ├── auth.service.ts        # Fourni en root
+│   │       └── storage.service.ts     # LocalStorage
+│   │
+│   ├── shared/                        # Composants/réutilisables
+│   │   ├── components/                # Composants standalone
+│   │   │   ├── header/
+│   │   │   └── photo-upload/
+│   │   │
+│   │   ├── pipes/                     # Pipes standalone
+│   │   │   └── weight.pipe.ts
+│   │   │
+│   │   └── models/                    # Modèles TS
+│   │       ├── user.model.ts
+│   │       └── request.model.ts
+│   │
+│   ├── store/                         # NgRx (Store/Effects)
+│   │   ├── auth/
+│   │   ├── requests/
+│   │   └── points/
+│   │
+│   ├── app.routes.ts                  # Routes globales
+│   └── app.config.ts                  # Config providers
+│
+├── assets/
+├── styles/                            # Tailwind
+└── environments/ -->
+
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
