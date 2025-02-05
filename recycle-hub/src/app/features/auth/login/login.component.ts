@@ -114,9 +114,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { User } from '../../../shared/models/user';
-import { addUser, deleteUser, loadUsers, selectUser, updateUser } from '../../../store/user/user.actions';
+import { addUser, deleteUser, loadUsers, updateUser } from '../../../store/user/user.actions';
 import { selectCurrentUser, selectUsers } from '../../../store/user/user.selectors';
 import { CommonModule } from '@angular/common';
 
@@ -129,9 +129,9 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent implements OnInit {
   userForm!: FormGroup;
-  users$: Observable<User[]>; // Observable pour la liste des utilisateurs
-  currentUser$: Observable<User | undefined>; // Observable pour l'utilisateur sélectionné
-  currentUserId: string | null = null;
+  users$: Observable<User[]>; // Liste des utilisateurs
+  currentUser$: Observable<User | undefined>; // Utilisateur sélectionné (corrigé)
+  selectedUserId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -143,10 +143,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.store.dispatch(loadUsers()); // Charger les utilisateurs au démarrage
+    this.store.dispatch(loadUsers()); // Charger les utilisateurs depuis le Store
+
+    this.currentUser$.subscribe(user => {
+      if (user) this.setFormValues(user);
+    });
   }
 
-    initForm(): void {
+  private initForm(): void {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -155,32 +159,38 @@ export class LoginComponent implements OnInit {
       address: ['', Validators.required],
       phone: ['', Validators.required],
       birthDate: ['', Validators.required],
-      role: ['user', Validators.required], // ✅ Rôle par défaut
+      role: ['user', Validators.required], 
       city: ['', Validators.required],
-      points: [0, [Validators.required, Validators.min(0)]] // ✅ Validation des points
+      points: [0, [Validators.required, Validators.min(0)]]
     });
   }
-  
 
-  // ... reste du code (initForm, editUserById, etc.)
+  private setFormValues(user: User): void {
+    this.userForm.patchValue({
+      ...user,
+      birthDate: new Date(user.birthDate).toISOString().split('T')[0]
+    });
+  }
 
-  addUser(): void {
+  submitUser(): void {
     if (this.userForm.valid) {
-      const userData: User = {
-        id: Date.now().toString(),
-        ...this.userForm.value,
-        birthDate: new Date(this.userForm.value.birthDate)
-      };
-
-      if (this.currentUserId) {
-        this.store.dispatch(updateUser({ user: userData }));
+      const userData: User = { ...this.userForm.value, birthDate: new Date(this.userForm.value.birthDate) };
+  
+      if (this.selectedUserId) {
+        this.store.dispatch(updateUser({ user: { ...userData, id: this.selectedUserId } }));
+        this.selectedUserId = null;
       } else {
-        this.store.dispatch(addUser({ user: userData }));
+        const userId = Date.now().toString();
+        this.store.dispatch(addUser({ user: { ...userData, id: userId } }));
       }
-
+  
       this.userForm.reset({ role: 'user', points: 0 });
-      this.currentUserId = null;
     }
+  }
+
+  editUser(user: User): void {
+    this.selectedUserId = user.id;
+    this.setFormValues(user);
   }
 
   deleteUser(id: string): void {
