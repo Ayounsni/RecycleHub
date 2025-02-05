@@ -67,11 +67,14 @@
     </div>
   
     <!-- Bouton de soumission -->
-    <button type="submit" [disabled]="userForm.invalid">Ajouter</button>
+    <button type="submit" [disabled]="userForm.invalid">
+        {{ currentUserId ? 'Modifier' : 'Ajouter' }}
+      </button>
   </form>
   
   <!-- Liste des utilisateurs -->
-  <div *ngFor="let user of users">
+  <div *ngFor="let user of users$ | async">
     <p>{{ user.firstName }} {{ user.lastName }} - {{ user.email }}</p>
+    <!-- <button (click)="editUserById(user.id)">Modifier</button> -->
     <button (click)="deleteUser(user.id)">Supprimer</button>
   </div>
