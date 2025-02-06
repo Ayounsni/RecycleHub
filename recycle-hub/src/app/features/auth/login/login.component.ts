@@ -114,7 +114,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable} from 'rxjs';
 import { User } from '../../../shared/models/user';
 import { addUser, deleteUser, loadUsers, updateUser } from '../../../store/user/user.actions';
 import { selectCurrentUser, selectUsers } from '../../../store/user/user.selectors';

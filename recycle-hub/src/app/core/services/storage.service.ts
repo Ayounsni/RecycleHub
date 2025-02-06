@@ -20,10 +20,6 @@ export class StorageService {
     return data ? JSON.parse(data) as T[] : [];
   }
 
-  LocalStorage<T>(key: string): T[] {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) as T[] : [];
-  }
 
   removeFromLocalStorage(key: string): void {
     localStorage.removeItem(key);
