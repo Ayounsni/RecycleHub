@@ -5,7 +5,6 @@ import * as UserActions from './user.actions';
 
 export const userReducer = createReducer(
   initialUserState,
-  // Charger les utilisateurs
   on(UserActions.loadUsers, (state) => ({
     ...state,
     isLoading: true,
@@ -21,25 +20,21 @@ export const userReducer = createReducer(
     isLoading: false,
   })),
 
-  // Ajouter un utilisateur
   on(UserActions.addUser, (state, { user }) => ({
     ...state,
     users: [...state.users, user],
   })),
 
-  // Modifier un utilisateur
   on(UserActions.updateUser, (state, { user }) => ({
     ...state,
     users: state.users.map((u) => (u.id === user.id ? user : u)),
   })),
 
-  // Supprimer un utilisateur
   on(UserActions.deleteUser, (state, { id }) => ({
     ...state,
     users: state.users.filter((u) => u.id !== id),
   })),
 
-  // Sélectionner un utilisateur
   on(UserActions.selectUser, (state, { id }) => ({
     ...state,
     currentUserId: id,

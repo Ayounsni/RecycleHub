@@ -12,7 +12,6 @@ export class UserEffects {
   private actions$ = inject(Actions); 
   constructor(private storageService: StorageService) {}
 
-  // Charger les utilisateurs depuis LocalStorage
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.loadUsers),
