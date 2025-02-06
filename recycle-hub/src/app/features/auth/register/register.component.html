@@ -1,1 +1,157 @@
-<p>register works!</p>
+<div class="max-w-lg mx-auto p-4 bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-semibold text-center mb-6">Inscription</h2>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+      <!-- Email -->
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}" />
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-sm text-red-500">
+          <div *ngIf="registerForm.get('email')?.hasError('required')">L'email est requis.</div>
+          <div *ngIf="registerForm.get('email')?.hasError('email')">Veuillez entrer un email valide.</div>
+        </div>
+      </div>
+  
+      <!-- Mot de passe -->
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}" />
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-sm text-red-500">
+          <div *ngIf="registerForm.get('password')?.hasError('required')">Le mot de passe est requis.</div>
+          <div *ngIf="registerForm.get('password')?.hasError('minlength')">Le mot de passe doit comporter au moins 6 caractères.</div>
+        </div>
+      </div>
+  
+      <!-- Confirmation du mot de passe -->
+      <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+        <input 
+          id="confirmPassword" 
+          type="password" 
+          formControlName="confirmPassword" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched}" />
+        <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-sm text-red-500">
+          <div *ngIf="registerForm.hasError('mismatch')">Les mots de passe ne correspondent pas.</div>
+          <div *ngIf="registerForm.get('confirmPassword')?.hasError('required')">La confirmation du mot de passe est requise.</div>
+        </div>
+      </div>
+  
+      <!-- Prénom -->
+      <div class="mb-4">
+        <label for="firstName" class="block text-sm font-medium text-gray-700">Prénom</label>
+        <input 
+          id="firstName" 
+          type="text" 
+          formControlName="firstName" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}" />
+        <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="text-sm text-red-500">
+          Le prénom est requis.
+        </div>
+      </div>
+  
+      <!-- Nom -->
+      <div class="mb-4">
+        <label for="lastName" class="block text-sm font-medium text-gray-700">Nom</label>
+        <input 
+          id="lastName" 
+          type="text" 
+          formControlName="lastName" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}" />
+        <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="text-sm text-red-500">
+          Le nom est requis.
+        </div>
+      </div>
+  
+      <!-- Adresse -->
+      <div class="mb-4">
+        <label for="address" class="block text-sm font-medium text-gray-700">Adresse</label>
+        <input 
+          id="address" 
+          type="text" 
+          formControlName="address" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('address')?.invalid && registerForm.get('address')?.touched}" />
+        <div *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched" class="text-sm text-red-500">
+          L'adresse est requise.
+        </div>
+      </div>
+  
+      <!-- Téléphone -->
+      <div class="mb-4">
+        <label for="phone" class="block text-sm font-medium text-gray-700">Téléphone</label>
+        <input 
+          id="phone" 
+          type="text" 
+          formControlName="phone" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched}" />
+        <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="text-sm text-red-500">
+          Le numéro de téléphone est requis.
+        </div>
+      </div>
+  
+      <!-- Date de naissance -->
+      <div class="mb-4">
+        <label for="birthDate" class="block text-sm font-medium text-gray-700">Date de naissance</label>
+        <input 
+          id="birthDate" 
+          type="date" 
+          formControlName="birthDate" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched}" />
+        <div *ngIf="registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched" class="text-sm text-red-500">
+          La date de naissance est requise.
+        </div>
+      </div>
+  
+      <!-- Ville -->
+      <div class="mb-4">
+        <label for="city" class="block text-sm font-medium text-gray-700">Ville</label>
+        <input 
+          id="city" 
+          type="text" 
+          formControlName="city" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('city')?.invalid && registerForm.get('city')?.touched}" />
+        <div *ngIf="registerForm.get('city')?.invalid && registerForm.get('city')?.touched" class="text-sm text-red-500">
+          La ville est requise.
+        </div>
+      </div>
+  
+      <!-- Points -->
+      <div class="mb-4">
+        <label for="points" class="block text-sm font-medium text-gray-700">Points</label>
+        <input 
+          id="points" 
+          type="number" 
+          formControlName="points" 
+          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          [ngClass]="{'border-red-500': registerForm.get('points')?.invalid && registerForm.get('points')?.touched}" />
+        <div *ngIf="registerForm.get('points')?.invalid && registerForm.get('points')?.touched" class="text-sm text-red-500">
+          Les points doivent être un nombre positif.
+        </div>
+      </div>
+  
+      <!-- Submit -->
+      <button 
+        type="submit" 
+        class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none disabled:opacity-50"
+        [disabled]="registerForm.invalid">
+        S'inscrire
+      </button>
+    </form>
+  </div>
+  

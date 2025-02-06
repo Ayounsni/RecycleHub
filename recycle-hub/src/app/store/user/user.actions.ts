@@ -20,6 +20,23 @@ export const addUser = createAction(
   props<{ user: User }>()
 );
 
+export const loginUser = createAction(
+  '[User] Login User',
+  props<{ email: string; password: string }>()
+);
+export const loginUserSuccess = createAction(
+  '[User] Login User Success',
+  props<{ user: User }>()
+);
+export const loginUserFailure = createAction(
+  '[User] Login User Failure',
+  props<{ error: string }>()
+);
+
+// Déconnexion
+export const logoutUser = createAction('[User] Logout User');
+
+
 // Modifier un utilisateur
 export const updateUser = createAction(
   '[User] Update User',

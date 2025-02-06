@@ -23,4 +23,17 @@ export class UserEffects {
       )
     )
   );
+
+  loginUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.loginUser),
+      mergeMap(({ email, password }) => {
+        const users = this.storageService.getArrayFromLocalStorage<User>('users') || [];
+        const user = users.find(u => u.email === email && u.password === password);
+        return user
+          ? of(UserActions.loginUserSuccess({ user }))
+          : of(UserActions.loginUserFailure({ error: 'Invalid credentials' }));
+      })
+    )
+  );
 }
