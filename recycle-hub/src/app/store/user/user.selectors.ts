@@ -9,9 +9,14 @@ export const selectUsers = createSelector(
   (state) => state.users
 );
 
-export const selectCurrentUser = createSelector(
+export const selectCurrentUserId = createSelector(
   selectUserState,
   (state) => state.users.find((u) => u.id === state.currentUserId)
+);
+
+export const selectCurrentUser = createSelector(
+  selectUserState,
+  (state) => state.currentUser
 );
 
 export const selectIsLoading = createSelector(

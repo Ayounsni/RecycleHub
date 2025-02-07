@@ -38,6 +38,8 @@ export const loginUserFailure = createAction(
   props<{ error: string }>()
 );
 
+export const loadCurrentUser = createAction('[User] Load Current User');
+
 // Déconnexion
 export const logoutUser = createAction('[User] Logout User');
 

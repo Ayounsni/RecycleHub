@@ -10,7 +10,7 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
-    provideStore(), // 👈 Fournit un Store global
+    provideStore(),
     provideState({ name: 'user', reducer: userReducer }), 
     provideEffects([UserEffects]),
   ]

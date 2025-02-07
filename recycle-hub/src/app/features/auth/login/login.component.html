@@ -78,4 +78,13 @@
     <button (click)="editUser(user)">Modifier</button>
     <button (click)="deleteUser(user.id)">Supprimer</button>
   </div>
+
+  <div *ngIf="currentUser$ | async as currentUser; else notLogged">
+    <h2>Bienvenue, {{ currentUser.firstName }} {{ currentUser.lastName }} !</h2>
+    <p>Email : {{ currentUser.email }}</p>
+    <!-- Autres infos -->
+  </div>
+  <ng-template #notLogged>
+    <p>Aucun utilisateur connecté.</p>
+  </ng-template>
   

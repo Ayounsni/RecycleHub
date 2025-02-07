@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { addUser } from '../../../store/user/user.actions';
 import { User } from '../../../shared/models/user';
+import { uniqueEmailValidator } from '../../../shared/validators/unique-email.validator';
+import { StorageService } from '../../../core/services/storage.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +19,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store
+    private store: Store,
+    private storageService: StorageService
   ) {}
 
   ngOnInit(): void {
@@ -27,7 +30,7 @@ export class RegisterComponent implements OnInit {
 
   private initForm(): void {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, uniqueEmailValidator(this.storageService)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -48,7 +51,6 @@ export class RegisterComponent implements OnInit {
   }
 
   submitRegister(): void {
-    console.log('submitRegister appelé');
     if (this.registerForm.valid) {
       const userData: User = {
         ...this.registerForm.value,
@@ -57,6 +59,5 @@ export class RegisterComponent implements OnInit {
       const userId = Date.now().toString();
       this.store.dispatch(addUser({ user: { ...userData, id: userId } }));
     }
-    console.log('submitRegister finiir');
   }
 }

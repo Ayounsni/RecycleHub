@@ -116,8 +116,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Store } from '@ngrx/store';
 import { Observable} from 'rxjs';
 import { User } from '../../../shared/models/user';
-import { addUser, deleteUser, loadUsers, updateUser } from '../../../store/user/user.actions';
-import { selectCurrentUser, selectUsers } from '../../../store/user/user.selectors';
+import { addUser, deleteUser, loadCurrentUser, loadUsers, updateUser } from '../../../store/user/user.actions';
+import { selectCurrentUser, selectCurrentUserId, selectUsers } from '../../../store/user/user.selectors';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -130,7 +130,8 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
   userForm!: FormGroup;
   users$: Observable<User[]>; // Liste des utilisateurs
-  currentUser$: Observable<User | undefined>; // Utilisateur sélectionné (corrigé)
+  currentUserId$: Observable<User | undefined>; // Utilisateur sélectionné (corrigé)
+  currentUser$: Observable<User | null>;
   selectedUserId: string | null = null;
 
   constructor(
@@ -138,15 +139,16 @@ export class LoginComponent implements OnInit {
     private store: Store
   ) {
     this.users$ = this.store.select(selectUsers);
-    this.currentUser$ = this.store.select(selectCurrentUser);
+    this.currentUserId$ = this.store.select(selectCurrentUserId);
+    this.currentUser$ = this.store.select(selectCurrentUser)
   }
 
   ngOnInit(): void {
     this.initForm();
-    this.store.dispatch(loadUsers()); // Charger les utilisateurs depuis le Store
-    console.log(this.users$);
+    this.store.dispatch(loadUsers()); 
+    this.store.dispatch(loadCurrentUser());
 
-    this.currentUser$.subscribe(user => {
+    this.currentUserId$.subscribe(user => {
       if (user) this.setFormValues(user);
     });
   }
