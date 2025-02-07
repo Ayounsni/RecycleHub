@@ -144,6 +144,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.store.dispatch(loadUsers()); // Charger les utilisateurs depuis le Store
+    console.log(this.users$);
 
     this.currentUser$.subscribe(user => {
       if (user) this.setFormValues(user);

@@ -20,6 +20,11 @@ export const addUser = createAction(
   props<{ user: User }>()
 );
 
+export const addUserSuccess = createAction(
+  '[User] Add User Success',
+  props<{ user: User }>()
+);
+
 export const loginUser = createAction(
   '[User] Login User',
   props<{ email: string; password: string }>()

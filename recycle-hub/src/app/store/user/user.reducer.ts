@@ -16,7 +16,13 @@ export const userReducer = createReducer(
   })),
   on(UserActions.loadUsersFailure, (state, { error }) => ({
     ...state,
-    error,
+    error: error,
+    isLoading: false,
+  })),
+
+  on(UserActions.loginUserFailure, (state, { error }) => ({
+    ...state,
+    error: error,
     isLoading: false,
   })),
 
@@ -33,6 +39,7 @@ export const userReducer = createReducer(
   on(UserActions.loginUserSuccess, (state, { user }) => ({
     ...state,
     currentUser: user,
+    error: null,
   })),
   on(UserActions.logoutUser, (state) => ({
     ...state,
