@@ -1,168 +1,207 @@
-<div class="max-w-lg mx-auto p-4 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-center mb-6">Inscription</h2>
-    
-    <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
-      <!-- Email -->
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input 
-          id="email" 
-          type="email" 
-          formControlName="email" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}" />
-        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-sm text-red-500">
-          <div *ngIf="registerForm.get('email')?.hasError('required')">L'email est requis.</div>
-          <div *ngIf="registerForm.get('email')?.hasError('email')">Veuillez entrer un email valide.</div>
-          <div *ngIf="registerForm.get('email')?.errors?.['emailExists']">
-            Cet email est déjà utilisé.
+<div class="min-h-screen pt-40 bg-gradient-to-r from-green-100 to-blue-100">
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+      <!-- Progress indicator -->
+      <div class="p-6 bg-gradient-to-r from-green-50/80 to-blue-50/80 backdrop-blur-sm">
+        <div class="max-w-2xl mx-auto">
+          <div class="relative flex items-center justify-between">
+            <!-- Progress line -->
+            <div class="absolute top-1/2 left-4 right-4 h-1 bg-gray-200 rounded-full -translate-y-1/2">
+              <div class="absolute h-full bg-green-500 rounded-full transition-all duration-500 ease-out" 
+                   [style.width.%]="(currentStep-1) * 50"></div>
+            </div>
+      
+            <div *ngFor="let step of [1,2,3]" class="relative z-10 flex flex-col items-center">
+              <button class="group focus:outline-none" (click)="currentStep = step" [disabled]="currentStep < step">
+                <!-- Step circle -->
+                <div 
+                  [class]="'w-10 h-10 rounded-full flex items-center justify-center text-base font-bold border-4 transition-all duration-300 ' + 
+                  (currentStep >= step 
+                    ? 'bg-green-500 border-green-100 shadow-lg scale-105' 
+                    : 'bg-white border-gray-200')">
+                  
+                  <!-- Check icon for completed steps -->
+                  <ng-container *ngIf="currentStep > step; else stepNumber">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </ng-container>
+                  
+                  <ng-template #stepNumber>
+                    <span [class]="currentStep >= step ? 'text-white' : 'text-gray-400'">{{ step }}</span>
+                  </ng-template>
+                </div>
+      
+                <!-- Step label -->
+                <div class="mt-2 text-center">
+                  <div [class]="'text-xs font-medium transition-colors ' + 
+                    (currentStep >= step ? 'text-green-600' : 'text-gray-400')">
+                    {{ getStepLabel(step) }}
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
   
-      <!-- Mot de passe -->
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-        <input 
-          id="password" 
-          type="password" 
-          formControlName="password" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}" />
-        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-sm text-red-500">
-          <div *ngIf="registerForm.get('password')?.hasError('required')">Le mot de passe est requis.</div>
-          <div *ngIf="registerForm.get('password')?.hasError('minlength')">Le mot de passe doit comporter au moins 6 caractères.</div>
-        </div>
-      </div>
+      <!-- Step 1 -->
+      <form *ngIf="currentStep === 1" [formGroup]="step1Form" class="p-6 space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">
+          Informations personnelles
+          <span class="block w-12 h-1 bg-green-600 mt-1 rounded-full"></span>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Prénom</label>
+            <input type="text" formControlName="firstName" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step1Form.get('firstName')?.invalid && step1Form.get('firstName')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              Le prénom est requis
+            </div>
+          </div>
   
-      <!-- Confirmation du mot de passe -->
-      <div class="mb-4">
-        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
-        <input 
-          id="confirmPassword" 
-          type="password" 
-          formControlName="confirmPassword" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched}" />
-        <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-sm text-red-500">
-          <div *ngIf="registerForm.hasError('mismatch')">Les mots de passe ne correspondent pas.</div>
-          <div *ngIf="registerForm.get('confirmPassword')?.hasError('required')">La confirmation du mot de passe est requise.</div>
-        </div>
-      </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Nom</label>
+            <input type="text" formControlName="lastName" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step1Form.get('lastName')?.invalid && step1Form.get('lastName')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              Le nom est requis
+            </div>
+          </div>
   
-      <!-- Prénom -->
-      <div class="mb-4">
-        <label for="firstName" class="block text-sm font-medium text-gray-700">Prénom</label>
-        <input 
-          id="firstName" 
-          type="text" 
-          formControlName="firstName" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}" />
-        <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="text-sm text-red-500">
-          Le prénom est requis.
+          <div class="md:col-span-2">
+            <label class="block text-gray-700 font-medium mb-1">Email</label>
+            <input type="email" formControlName="email" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step1Form.get('email')?.invalid && step1Form.get('email')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              <span *ngIf="step1Form.get('email')?.errors?.['required']">L'email est requis</span>
+              <span *ngIf="step1Form.get('email')?.errors?.['email']">Veuillez entrer un email valide</span>
+              <span *ngIf="step1Form.get('email')?.errors?.['emailExists']">Cet email est déjà utilisé.</span>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div>
-        <label>Rôle :</label>
-        <select formControlName="role">
-          <option value="user">Particulier</option>
-          <option value="collector">Collecteur</option>
-        </select>
-      </div>
   
-      <!-- Nom -->
-      <div class="mb-4">
-        <label for="lastName" class="block text-sm font-medium text-gray-700">Nom</label>
-        <input 
-          id="lastName" 
-          type="text" 
-          formControlName="lastName" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}" />
-        <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="text-sm text-red-500">
-          Le nom est requis.
+        <div class="flex justify-end">
+          <button type="button" 
+                  (click)="nextStep()"
+                  [disabled]="step1Form.invalid"
+                  class="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:shadow-md hover:scale-105 transition-all duration-300 font-semibold disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none">
+            Suivant
+          </button>
         </div>
-      </div>
+      </form>
   
-      <!-- Adresse -->
-      <div class="mb-4">
-        <label for="address" class="block text-sm font-medium text-gray-700">Adresse</label>
-        <input 
-          id="address" 
-          type="text" 
-          formControlName="address" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('address')?.invalid && registerForm.get('address')?.touched}" />
-        <div *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched" class="text-sm text-red-500">
-          L'adresse est requise.
+      <!-- Step 2 -->
+      <form *ngIf="currentStep === 2" [formGroup]="step2Form" class="p-6 space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">
+          Coordonnées
+          <span class="block w-12 h-1 bg-green-600 mt-1 rounded-full"></span>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Adresse</label>
+            <input type="text" formControlName="address" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step2Form.get('address')?.invalid && step2Form.get('address')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              L'adresse est requise
+            </div>
+          </div>
+  
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Téléphone</label>
+            <input type="tel" formControlName="phone" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step2Form.get('phone')?.invalid && step2Form.get('phone')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              Le téléphone est requis
+            </div>
+          </div>
+  
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Date de naissance</label>
+            <input type="date" formControlName="birthDate" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step2Form.get('birthDate')?.invalid && step2Form.get('birthDate')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              La date de naissance est requise
+            </div>
+          </div>
+  
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Ville</label>
+            <input type="text" formControlName="city" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step2Form.get('city')?.invalid && step2Form.get('city')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              La ville est requise
+            </div>
+          </div>
         </div>
-      </div>
   
-      <!-- Téléphone -->
-      <div class="mb-4">
-        <label for="phone" class="block text-sm font-medium text-gray-700">Téléphone</label>
-        <input 
-          id="phone" 
-          type="text" 
-          formControlName="phone" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched}" />
-        <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="text-sm text-red-500">
-          Le numéro de téléphone est requis.
+        <div class="flex justify-between">
+          <button type="button" 
+                  (click)="prevStep()"
+                  class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 hover:shadow-md hover:scale-105 transition-all duration-300 font-semibold">
+            Retour
+          </button>
+          <button type="button" 
+                  (click)="nextStep()"
+                  [disabled]="step2Form.invalid"
+                  class="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:shadow-md hover:scale-105 transition-all duration-300 font-semibold disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none">
+            Suivant
+          </button>
         </div>
-      </div>
+      </form>
   
-      <!-- Date de naissance -->
-      <div class="mb-4">
-        <label for="birthDate" class="block text-sm font-medium text-gray-700">Date de naissance</label>
-        <input 
-          id="birthDate" 
-          type="date" 
-          formControlName="birthDate" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched}" />
-        <div *ngIf="registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched" class="text-sm text-red-500">
-          La date de naissance est requise.
+      <!-- Step 3 -->
+      <form *ngIf="currentStep === 3" [formGroup]="step3Form" class="p-6 space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">
+          Sécurité
+          <span class="block w-12 h-1 bg-green-600 mt-1 rounded-full"></span>
+        </h2>
+        
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Mot de passe</label>
+            <input type="password" formControlName="password" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step3Form.get('password')?.invalid && step3Form.get('password')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              Le mot de passe doit contenir au moins 6 caractères
+            </div>
+          </div>
+  
+          <div>
+            <label class="block text-gray-700 font-medium mb-1">Confirmer le mot de passe</label>
+            <input type="password" formControlName="confirmPassword" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            <div *ngIf="step3Form.get('confirmPassword')?.invalid && step3Form.get('confirmPassword')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+              <span *ngIf="step3Form.get('confirmPassword')?.errors?.['required']">La confirmation est requise</span>
+              <span *ngIf="step3Form.errors?.['passwordMismatch']">Les mots de passe ne correspondent pas</span>
+            </div>
+          </div>
         </div>
-      </div>
   
-      <!-- Ville -->
-      <div class="mb-4">
-        <label for="city" class="block text-sm font-medium text-gray-700">Ville</label>
-        <input 
-          id="city" 
-          type="text" 
-          formControlName="city" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('city')?.invalid && registerForm.get('city')?.touched}" />
-        <div *ngIf="registerForm.get('city')?.invalid && registerForm.get('city')?.touched" class="text-sm text-red-500">
-          La ville est requise.
+        <div class="flex justify-between">
+          <button type="button" 
+                  (click)="prevStep()"
+                  class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 hover:shadow-md hover:scale-105 transition-all duration-300 font-semibold">
+            Retour
+          </button>
+          <button type="submit" 
+                  (click)="onSubmit()"
+                  [disabled]="step3Form.invalid"
+                  class="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:shadow-md hover:scale-105 transition-all duration-300 font-semibold disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none">
+            S'inscrire
+          </button>
         </div>
-      </div>
-  
-      <!-- Points -->
-      <div class="mb-4">
-        <label for="points" class="block text-sm font-medium text-gray-700">Points</label>
-        <input 
-          id="points" 
-          type="number" 
-          formControlName="points" 
-          class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-          [ngClass]="{'border-red-500': registerForm.get('points')?.invalid && registerForm.get('points')?.touched}" />
-        <div *ngIf="registerForm.get('points')?.invalid && registerForm.get('points')?.touched" class="text-sm text-red-500">
-          Les points doivent être un nombre positif.
-        </div>
-      </div>
-  
-      <!-- Submit -->
-      <button 
-        type="submit" 
-        class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none disabled:opacity-50"
-        [disabled]="registerForm.invalid">
-        S'inscrire
-      </button>
-    </form>
+      </form>
+    </div>
   </div>
-  

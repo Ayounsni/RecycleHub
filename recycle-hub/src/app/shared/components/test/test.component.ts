@@ -8,13 +8,13 @@ import { selectError } from '../../../store/user/user.selectors';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-test',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,RouterLink],
-  templateUrl: './loginn.component.html',
-  styleUrls: ['./loginn.component.css']
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.css']
 })
-export class LoginnComponent {
+export class TestComponent {
   loginForm: FormGroup;
   showPassword = false;
   error$: Observable<string | null>;

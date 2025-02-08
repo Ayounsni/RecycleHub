@@ -63,7 +63,7 @@ export class UserEffects {
         const user = users.find(u => u.email === email && u.password === password);
         return user
           ? of(UserActions.loginUserSuccess({ user }))
-          : of(UserActions.loginUserFailure({ error: 'Invalid credentials' }));
+          : of(UserActions.loginUserFailure({ error: 'Identifiants incorrects. Veuillez réessayer.' }));
       })
     )
   );
