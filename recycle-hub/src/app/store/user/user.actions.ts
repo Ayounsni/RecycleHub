@@ -38,6 +38,11 @@ export const loginUserFailure = createAction(
   props<{ error: string }>()
 );
 
+// user.actions.ts
+export const rehydrateUser = createAction(
+  '[User] Rehydrate User',
+  props<{ user: User }>()
+);
 export const loadCurrentUser = createAction('[User] Load Current User');
 
 // Déconnexion

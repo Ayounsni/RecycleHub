@@ -1,0 +1,27 @@
+<!-- confirmation-popup.component.html -->
+<div class="fixed inset-0 backdrop-blur-xs bg-white/30 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md border border-green-100 transform transition-all duration-300 scale-95 ">
+      <div class="text-center mb-6">
+        <div class="mx-auto bg-gradient-to-br from-green-100 to-green-200 w-16 h-16 pb-3 rounded-full flex items-center justify-center mb-4">
+          <span class="text-3xl">⚠️</span>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Confirmer la suppression</h3>
+        <p class="text-gray-600">Êtes-vous sûr de vouloir supprimer votre compte ?<br>Cette action est irréversible.</p>
+      </div>
+  
+      <div class="flex justify-center space-x-4">
+        <button 
+          (click)="onNoClick()"
+          class="px-6 py-2.5 border-2 border-green-100 text-gray-600 rounded-xl hover:bg-green-50 hover:border-green-200 transition-all duration-300 font-medium"
+        >
+          Annuler
+        </button>
+        <button 
+          (click)="onYesClick()"
+          class="px-6 py-2.5 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 font-medium"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>

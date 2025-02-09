@@ -1,62 +1,140 @@
-<!-- login.component.html -->
-<div class="min-h-screen bg-gradient-to-r from-green-100 to-blue-100 pt-32">
-    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg overflow-hidden p-8">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold text-gray-800 mb-2">
-          Connexion à votre compte
-          <span class="block w-16 h-1.5 bg-green-600 mt-2 rounded-full mx-auto"></span>
-        </h2>      </div>
+<div class="min-h-screen bg-gradient-to-r from-green-100 to-blue-100 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <!-- En-tête -->
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mt-16 text-gray-800 mb-3">
+          Mes demandes de collecte 
+          <span class="text-green-700">éco-responsables</span>
+        </h1>
+        <button 
+          class="px-6 py-2 bg-gradient-to-br from-green-600 to-green-700 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+        >
+          + Nouvelle demande
+        </button>
+      </div>
   
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <div *ngIf="error$ | async as error" class="text-red-500 text-center text-sm p-2 bg-red-50 rounded-lg">
-            {{ error }}
-          </div>
-        <div>
-          <label class="block text-gray-700 font-medium mb-2">Email</label>
-          <input type="email" formControlName="email"
-                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                 placeholder="exemple@email.com">
-          <div *ngIf="f['email'].touched && f['email'].invalid" class="text-red-500 text-sm mt-1">
-            <span *ngIf="f['email'].errors?.['required']">L'email est requis</span>
-            <span *ngIf="f['email'].errors?.['email']">Veuillez entrer un email valide</span>
+      <!-- Grille des collectes -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Carte de collecte -->
+        <div *ngFor="let collect of collections" class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div class="p-6">
+            <!-- En-tête de la carte -->
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-4 py-1 rounded-full text-sm font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': collect.status === 'collecté',
+                  'bg-orange-100 text-orange-700': collect.status === 'en attente'
+                }">
+                {{ collect.status }}
+              </span>
+              <div class="flex gap-2" *ngIf="collect.status === 'en attente'">
+                <button class="text-green-600 hover:text-green-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                  </svg>
+                </button>
+                <button class="text-red-600 hover:text-red-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+  
+            <!-- Corps de la carte -->
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <span class="text-2xl">
+                    {{ getTypeIcon(collect.type) }}
+                  </span>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-800">{{ collect.type }}</h3>
+                  <p class="text-green-600 font-medium">{{ collect.weight }}g</p>
+                </div>
+              </div>
+  
+              <div class="space-y-2">
+                <div class="flex items-center text-gray-600">
+                  <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  {{ collect.address }}
+                </div>
+  
+                <div class="flex items-center text-gray-600">
+                  <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  {{ collect.date | date:'dd/MM/yyyy' }} • {{ collect.time }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
   
-        <div>
-          <label class="block text-gray-700 font-medium mb-2">Mot de passe</label>
-          <div class="relative">
-            <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
-                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 pr-12"
-                   placeholder="••••••••">
-            <button type="button" (click)="togglePasswordVisibility()" 
-                    class="absolute inset-y-0 right-0 px-3 flex items-center">
-              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-              </svg>
+    <!-- Modal de modification -->
+    <!-- <div class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">Modifier la collecte</h3>
+        
+        <form class="space-y-6">
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Type de déchet</label>
+            <select class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500">
+              <option>Plastique</option>
+              <option>Verre</option>
+              <option>Papier</option>
+              <option>Métal</option>
+            </select>
+          </div>
+  
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Poids (grammes)</label>
+            <input 
+              type="number" 
+              min="1000" 
+              value="1500" 
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+            >
+          </div>
+  
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Date</label>
+              <input 
+                type="date" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+              >
+            </div>
+            
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Heure</label>
+              <input 
+                type="time" 
+                min="09:00" 
+                max="18:00" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+              >
+            </div>
+          </div>
+  
+          <div class="flex justify-end gap-4">
+            <button type="button" class="px-6 py-2 text-gray-600 hover:text-gray-800">
+              Annuler
+            </button>
+            <button 
+              type="submit" 
+              class="px-6 py-2 bg-gradient-to-br from-green-600 to-green-700 text-white rounded-xl hover:shadow-lg"
+            >
+              Enregistrer
             </button>
           </div>
-          <div *ngIf="f['password'].touched && f['password'].invalid" class="text-red-500 text-sm mt-1">
-            Le mot de passe est requis
-          </div>
-          
-        </div>
-  
-
-        <button type="submit" 
-                [disabled]="loginForm.invalid"
-                class="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-300 font-semibold disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none">
-          Se connecter
-        </button>
-  
-        <p class="text-center text-gray-600 mt-6">
-          Pas encore de compte ? 
-          <a [routerLink]="['/register']" class="text-green-600 hover:text-green-700 font-semibold">
-            S'inscrire maintenant
-          </a>
-        </p>
-      </form>
-    </div>
+        </form>
+      </div>
+    </div> -->
   </div>
