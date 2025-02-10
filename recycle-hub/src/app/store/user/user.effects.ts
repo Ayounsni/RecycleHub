@@ -75,12 +75,12 @@ export class UserEffects {
         this.storageService.saveToLocalStorage('currentUser', user);
         // Redirection selon le rôle de l'utilisateur
         if (user.role === 'user' ) {
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/dashboard-particulier']);
         } else if ( user.role === 'collector') {
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/dashboard-collecteur']);
         } else {
           // Route par défaut si aucun rôle connu n'est trouvé
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/login']);
         }
       })
     ),

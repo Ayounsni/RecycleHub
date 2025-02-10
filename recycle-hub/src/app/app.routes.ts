@@ -4,11 +4,15 @@ import { HomeComponent } from './features/home/home.component';
 import { TestComponent } from './shared/components/test/test.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { ParticulierComponent } from './features/dashboard/particulier/particulier.component';
+import { CollecteurComponent } from './features/dashboard/collecteur/collecteur.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
     {path: 'test', component: TestComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'profile', component: ProfileComponent}
+    {path: 'profile', component: ProfileComponent},
+    {path: 'dashboard-particulier', component: ParticulierComponent},
+    {path: 'dashboard-collecteur', component: CollecteurComponent}
 ];

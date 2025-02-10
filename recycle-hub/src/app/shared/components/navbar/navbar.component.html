@@ -22,27 +22,19 @@
           <ng-container *ngIf="currentUser$ | async as user">
             <!-- Pour les utilisateurs avec le rôle "user" -->
             <ng-container *ngIf="user.role === 'user'">
-              <a routerLink="/profile" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
-                <span class="relative z-10">Profil</span>
+              <a routerLink="/dashboard-particulier" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
+                <span class="relative z-10">Demandes</span>
                 <span class="absolute inset-x-0 bottom-0 h-1 bg-green-200 scale-x-0 hover:scale-x-100 origin-left transition-transform duration-300"></span>
               </a>
               <a routerLink="/coupons" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
                 <span class="relative z-10">Coupons</span>
                 <span class="absolute inset-x-0 bottom-0 h-1 bg-green-200 scale-x-0 hover:scale-x-100 origin-left transition-transform duration-300"></span>
               </a>
-              <a routerLink="/offers" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
-                <span class="relative z-10">Offres</span>
-                <span class="absolute inset-x-0 bottom-0 h-1 bg-green-200 scale-x-0 hover:scale-x-100 origin-left transition-transform duration-300"></span>
-              </a>
             </ng-container>
   
             <!-- Pour les utilisateurs avec le rôle "collector" -->
             <ng-container *ngIf="user.role === 'collector'">
-              <a routerLink="/profile" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
-                <span class="relative z-10">Profil</span>
-                <span class="absolute inset-x-0 bottom-0 h-1 bg-green-200 scale-x-0 hover:scale-x-100 origin-left transition-transform duration-300"></span>
-              </a>
-              <a routerLink="/requests" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
+              <a routerLink="/dashboard-collecteur" class="relative text-gray-700 hover:text-green-700 px-2 py-1 transition-all duration-300">
                 <span class="relative z-10">Demandes</span>
                 <span class="absolute inset-x-0 bottom-0 h-1 bg-green-200 scale-x-0 hover:scale-x-100 origin-left transition-transform duration-300"></span>
               </a>

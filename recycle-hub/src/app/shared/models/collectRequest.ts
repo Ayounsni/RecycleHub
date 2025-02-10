@@ -5,16 +5,12 @@ export interface CollectRequest {
   id: string;
   userId: string;
   collectorId?: string; 
-  
-  wasteTypes: WasteType[]; 
-  wasteWeights: { [key in WasteType]?: number }; 
-  
+  wasteTypes: WasteType;   
   estimatedWeight: number; 
   actualWeight?: number;  
-  
   address: string;
   date: Date;
   timeSlot: string;
-  
+  city?: string;
   status: CollectRequestStatus; 
 }

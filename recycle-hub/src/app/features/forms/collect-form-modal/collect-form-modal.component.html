@@ -1,0 +1,130 @@
+<!-- collect-form-modal.component.html -->
+<div class="fixed inset-0 backdrop-blur-xs bg-white/30 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">
+        {{ isEditMode ? 'Modifier la collecte' : 'Nouvelle demande de collecte' }}
+      </h3>
+  
+      <form [formGroup]="collectForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 text-xs text-center rounded-lg">
+            {{ errorMessage }}
+          </div>
+        <!-- Type de déchet -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Type de déchet</label>
+          <select 
+            formControlName="wasteTypes"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+          >
+            <option value="plastic">Plastique</option>
+            <option value="glass">Verre</option>
+            <option value="paper">Papier</option>
+            <option value="metal">Métal</option>
+          </select>
+        </div>
+  
+        <!-- Poids estimé -->
+        <div>
+            <label class="block text-gray-700 font-medium mb-2">Poids estimé (grammes)</label>
+            <input 
+              type="number" 
+              formControlName="estimatedWeight"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+              min="1000"
+            >
+            <div *ngIf="collectForm.get('estimatedWeight')?.errors && (collectForm.get('estimatedWeight')?.touched || collectForm.get('estimatedWeight')?.dirty)">
+              <small class="text-red-500 text-xs">
+                <span *ngIf="collectForm.get('estimatedWeight')?.hasError('required')">
+                  Le poids est obligatoire
+                </span>
+                <span *ngIf="collectForm.get('estimatedWeight')?.hasError('min')">
+                  Minimum 1000 grammes
+                </span>
+                <span *ngIf="collectForm.get('estimatedWeight')?.hasError('pattern')">
+                  Veuillez entrer un nombre valide
+                </span>
+              </small>
+            </div>
+          </div>
+    
+          <!-- Adresse de collecte -->
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Adresse de collecte</label>
+            <input 
+              type="text" 
+              formControlName="address"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+            >
+            <div *ngIf="collectForm.get('address')?.errors && (collectForm.get('address')?.touched || collectForm.get('address')?.dirty)">
+              <small class="text-red-500 text-xs">
+                L'adresse est obligatoire
+              </small>
+            </div>
+          </div>
+    
+          <!-- Date et heure -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Date</label>
+              <input 
+                type="date" 
+                formControlName="date"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+              >
+              <div *ngIf="collectForm.get('date')?.errors && (collectForm.get('date')?.touched || collectForm.get('date')?.dirty)">
+                <small class="text-red-500 text-xs">
+                  <span *ngIf="collectForm.get('date')?.hasError('required')">
+                    La date est obligatoire
+                  </span>
+                  <span *ngIf="collectForm.get('date')?.hasError('pastDate')">
+                    La date doit être dans le futur
+                  </span>
+                </small>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-gray-700 font-medium mb-2">Heure</label>
+              <input 
+                type="time" 
+                formControlName="timeSlot"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500"
+                min="09:00" 
+                max="18:00"
+              >
+              <div *ngIf="collectForm.get('timeSlot')?.errors && (collectForm.get('timeSlot')?.touched || collectForm.get('timeSlot')?.dirty)">
+                <small class="text-red-500 text-xs">
+                  <span *ngIf="collectForm.get('timeSlot')?.hasError('required')">
+                    L'heure est obligatoire
+                  </span>
+                  <span *ngIf="collectForm.get('timeSlot')?.hasError('invalidFormat')">
+                    Format HH:MM requis
+                  </span>
+                  <span *ngIf="collectForm.get('timeSlot')?.hasError('invalidTime')">
+                    Créneau horaire : 09h00 - 18h00
+                  </span>
+                </small>
+              </div>
+            </div>
+          </div>
+  
+        <!-- Boutons -->
+        <div class="flex justify-end gap-4">
+          <button 
+            type="button" 
+            (click)="onClose()"
+            class="px-6 py-2 text-gray-600 hover:text-gray-800"
+          >
+            Annuler
+          </button>
+          <button 
+            type="submit" 
+            [disabled]="collectForm.invalid"
+            class="px-6 py-2 bg-gradient-to-br from-green-600 to-green-700 text-white rounded-xl hover:shadow-lg"
+          >
+            {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

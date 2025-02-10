@@ -3,21 +3,21 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { filter, Observable, take } from 'rxjs';
-import { CollectRequest } from '../../models/collectRequest';
 import { selectUserCollectRequests } from '../../../store/collectRequest/collectRequest.selectors';
 import { addCollectRequest, deleteCollectRequest, loadCollectRequests, loadUserCollectRequests, updateCollectRequest } from '../../../store/collectRequest/collectRequest.actions';
-import { CollectFormModalComponent } from '../../../features/forms/collect-form-modal/collect-form-modal.component';
-import { User } from '../../models/user';
 import { selectCurrentUser } from '../../../store/user/user.selectors';
+import { CollectRequest } from '../../../shared/models/collectRequest';
+import { User } from '../../../shared/models/user';
+import { CollectFormModalComponent } from '../../forms/collect-form-modal/collect-form-modal.component';
+
 
 @Component({
-  selector: 'app-test',
-  standalone: true,
+  selector: 'app-particulier',
   imports: [ReactiveFormsModule, CommonModule,CollectFormModalComponent],
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css']
+  templateUrl: './particulier.component.html',
+  styleUrl: './particulier.component.css'
 })
-export class TestComponent implements OnInit {
+export class ParticulierComponent implements OnInit {
 collections$: Observable<CollectRequest[]>;
 showModal: boolean = false;
 isEditMode: boolean = false;

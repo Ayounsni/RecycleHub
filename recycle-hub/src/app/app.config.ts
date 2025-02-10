@@ -7,11 +7,14 @@ import { UserEffects } from './store/user/user.effects';
 import { provideState } from '@ngrx/store';
 
 import { routes } from './app.routes';
+import { CollectEffects } from './store/collectRequest/collectRequest.effects';
+import { collectReducer } from './store/collectRequest/collectRequest.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
     provideStore(),
     provideState({ name: 'user', reducer: userReducer }), 
-    provideEffects([UserEffects]),
+    provideState({ name: 'collect', reducer: collectReducer, }),
+    provideEffects([UserEffects , CollectEffects]),
   ]
 };
