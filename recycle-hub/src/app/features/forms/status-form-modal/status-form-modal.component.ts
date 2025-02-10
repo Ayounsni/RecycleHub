@@ -38,9 +38,10 @@ export class StatusFormModalComponent implements OnInit {
     }
   
     onSubmit(): void {
-      if (this.collectForm.valid) {
+      if (this.collectForm.valid && this.collectToEdit) {
         const formValue = {
-          ...this.collectForm.value,
+          ...this.collectToEdit, 
+          ...this.collectForm.value
         };
         this.formSubmit.emit(formValue);
         this.onClose();

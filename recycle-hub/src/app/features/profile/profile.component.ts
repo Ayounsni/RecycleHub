@@ -65,7 +65,6 @@ export class ProfileComponent implements OnInit {
           ...this.profileForm.value
         };
 
-        // Mise à jour NgRx
         this.store.dispatch(updateUser({ user: updatedUser }));
 
         this.editMode = false;
@@ -83,11 +82,11 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteAccount(): void {
-    this.showConfirmationPopup = true; // Affiche la pop-up
+    this.showConfirmationPopup = true; 
   }
 
   handleConfirmation(confirmed: boolean): void {
-    this.showConfirmationPopup = false; // Masque la pop-up
+    this.showConfirmationPopup = false; 
 
     if (confirmed) {
       this.currentUser$.pipe(take(1)).subscribe(currentUser => {
@@ -95,10 +94,8 @@ export class ProfileComponent implements OnInit {
           return;
         }
 
-        // Dispatch de l'action de suppression
         this.store.dispatch(deleteUser({ id: currentUser.id }));
 
-        // Redirection vers la page d'accueil ou de connexion
         this.router.navigate(['/login']);
       });
     }

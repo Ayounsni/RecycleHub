@@ -8,6 +8,22 @@ import { CollectRequest } from '../../shared/models/collectRequest';
 import { selectCurrentUser } from '../user/user.selectors';
 import { Store } from '@ngrx/store';
 import { selectAllCollectRequests, selectUserCollectRequests } from './collectRequest.selectors';
+import { updateUserPoints } from '../user/user.actions';
+
+const calculatePoints = (wasteType: string, weightGrams: number): number => {
+    const weightKg = weightGrams / 1000;
+    const pointsMap: { [key: string]: number } = {
+      'plastic': 2,
+      'glass': 1,
+      'paper': 1,
+      'metal': 5
+    };
+    const key = wasteType.toLowerCase();
+    const pointsPerKg = pointsMap[key] || 0;
+    const calculated = Math.round(pointsPerKg * weightKg);
+    console.log(`Calculating points: wasteType=${wasteType}, key=${key}, weightKg=${weightKg}, pointsPerKg=${pointsPerKg}, calculated=${calculated}`);
+    return calculated;
+  };
 
 @Injectable()
 export class CollectEffects {
@@ -105,9 +121,29 @@ export class CollectEffects {
     this.actions$.pipe(
       ofType(CollectActions.updateCollectRequest),
       tap(({ request }) => {
-        const requests = this.storageService.getArrayFromLocalStorage<CollectRequest>('collectRequests') || [];
-        const updatedRequests = requests.map(r => r.id === request.id ? request : r);
-        this.storageService.saveToLocalStorage('collectRequests', updatedRequests);
+        const allRequests = this.storageService.getArrayFromLocalStorage<CollectRequest>('collectRequests') || [];
+        const previousRequest = allRequests.find(r => r.id === request.id);
+  
+        if (request.status === 'validated') {
+          const points = calculatePoints(request.wasteTypes, request.estimatedWeight);
+          
+          this.store.dispatch(updateUserPoints({ 
+            userId: request.userId, 
+            points 
+          }));
+  
+          const updatedRequest = { ...request, pointsAwarded: true };
+          const updatedRequests = allRequests.map(r => 
+            r.id === request.id ? updatedRequest : r
+          );
+          this.storageService.saveToLocalStorage('collectRequests', updatedRequests);
+        } else {
+          // Mise à jour normale
+          const updatedRequests = allRequests.map(r => 
+            r.id === request.id ? request : r
+          );
+          this.storageService.saveToLocalStorage('collectRequests', updatedRequests);
+        }
       })
     ),
     { dispatch: false }

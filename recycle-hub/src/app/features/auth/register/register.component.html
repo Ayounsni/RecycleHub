@@ -1,10 +1,8 @@
 <div class="min-h-screen pt-40 bg-gradient-to-r from-green-100 to-blue-100">
     <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-      <!-- Progress indicator -->
       <div class="p-6 bg-gradient-to-r from-green-50/80 to-blue-50/80 backdrop-blur-sm">
         <div class="max-w-2xl mx-auto">
           <div class="relative flex items-center justify-between">
-            <!-- Progress line -->
             <div class="absolute top-1/2 left-4 right-4 h-1 bg-gray-200 rounded-full -translate-y-1/2">
               <div class="absolute h-full bg-green-500 rounded-full transition-all duration-500 ease-out" 
                    [style.width.%]="(currentStep-1) * 50"></div>
@@ -12,14 +10,12 @@
       
             <div *ngFor="let step of [1,2,3]" class="relative z-10 flex flex-col items-center">
               <button class="group focus:outline-none" (click)="currentStep = step" [disabled]="currentStep < step">
-                <!-- Step circle -->
                 <div 
                   [class]="'w-10 h-10 rounded-full flex items-center justify-center text-base font-bold border-4 transition-all duration-300 ' + 
                   (currentStep >= step 
                     ? 'bg-green-500 border-green-100 shadow-lg scale-105' 
                     : 'bg-white border-gray-200')">
                   
-                  <!-- Check icon for completed steps -->
                   <ng-container *ngIf="currentStep > step; else stepNumber">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
@@ -31,7 +27,6 @@
                   </ng-template>
                 </div>
       
-                <!-- Step label -->
                 <div class="mt-2 text-center">
                   <div [class]="'text-xs font-medium transition-colors ' + 
                     (currentStep >= step ? 'text-green-600' : 'text-gray-400')">
@@ -44,7 +39,6 @@
         </div>
       </div>
   
-      <!-- Step 1 -->
       <form *ngIf="currentStep === 1" [formGroup]="step1Form" class="p-6 space-y-4">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">
           Informations personnelles
@@ -95,7 +89,6 @@
         </div>
       </form>
   
-      <!-- Step 2 -->
       <form *ngIf="currentStep === 2" [formGroup]="step2Form" class="p-6 space-y-4">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">
           Coordonnées
@@ -159,7 +152,6 @@
         </div>
       </form>
   
-      <!-- Step 3 -->
       <form *ngIf="currentStep === 3" [formGroup]="step3Form" class="p-6 space-y-4">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">
           Sécurité

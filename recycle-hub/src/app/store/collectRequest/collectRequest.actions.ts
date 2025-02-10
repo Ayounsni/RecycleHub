@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { CollectRequest } from '../../shared/models/collectRequest';
 
-// Charger les demandes
 export const loadCollectRequests = createAction('[Collect] Load Requests');
 export const loadCollectRequestsSuccess = createAction(
   '[Collect] Load Requests Success',
@@ -22,7 +21,6 @@ export const loadUserCollectRequests = createAction(
     props<{ city: string }>()
   );
 
-// Ajouter une demande
 export const addCollectRequest = createAction(
   '[Collect] Add Request',
   props<{ request: CollectRequest }>()
@@ -44,19 +42,16 @@ export const addCollectRequestError = createAction(
 
   export const resetAddRequestError = createAction('[Collect] Reset Add Request Error');
 
-// Modifier une demande
 export const updateCollectRequest = createAction(
   '[Collect] Update Request',
   props<{ request: CollectRequest }>()
 );
 
-// Supprimer une demande
 export const deleteCollectRequest = createAction(
   '[Collect] Delete Request',
   props<{ id: string }>()
 );
 
-// Sélectionner une demande
 export const selectCollectRequest = createAction(
   '[Collect] Select Request',
   props<{ id: string | null }>()

@@ -1,4 +1,3 @@
-// store/user/user.effects.ts
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
@@ -19,11 +18,8 @@ export class UserEffects {
       mergeMap(({ user }) =>
         of(this.storageService.getArrayFromLocalStorage<User>('users') || []).pipe(
           map((users) => {
-            // On crée une nouvelle liste en ajoutant l'utilisateur
             const updatedUsers = [...users, user];
-            // On met à jour le localStorage avec la liste modifiée
             this.storageService.saveToLocalStorage('users', updatedUsers);
-            // On retourne l'action loadUsersSuccess avec la liste mise à jour
             return UserActions.addUserSuccess({ user });
                     }),
           catchError((error) => of(UserActions.loadUsersFailure({ error })))
@@ -35,11 +31,10 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.addUserSuccess),
       tap(() => {
-        // Redirige vers la page de login
         this.router.navigate(['/login']);
       })
     ),
-    { dispatch: false } // Cet effet n'a pas besoin de dispatcher une action
+    { dispatch: false } 
   );
 
   loadUsers$ = createEffect(() =>
@@ -71,20 +66,17 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.loginUserSuccess),
       tap(({ user }) => {
-        // Sauvegarde de l'utilisateur connecté dans le localStorage
         this.storageService.saveToLocalStorage('currentUser', user);
-        // Redirection selon le rôle de l'utilisateur
         if (user.role === 'user' ) {
           this.router.navigate(['/dashboard-particulier']);
         } else if ( user.role === 'collector') {
           this.router.navigate(['/dashboard-collecteur']);
         } else {
-          // Route par défaut si aucun rôle connu n'est trouvé
           this.router.navigate(['/login']);
         }
       })
     ),
-    { dispatch: false } // Cet effet n'a pas besoin de dispatcher une action
+    { dispatch: false } 
   );
 
   loadCurrentUser$ = createEffect(() =>
@@ -99,25 +91,21 @@ export class UserEffects {
     )
   );
 
-  // Ajoutez cet effet dans votre fichier user.effects.ts
 logoutUser$ = createEffect(() =>
   this.actions$.pipe(
-    ofType(UserActions.logoutUser), // Écoute l'action de déconnexion
+    ofType(UserActions.logoutUser), 
     tap(() => {
-      // Supprime l'utilisateur actuel du localStorage
       this.storageService.removeFromLocalStorage('currentUser');
-      // Redirige vers la page de connexion
       this.router.navigate(['/login']);
     })
   ),
-  { dispatch: false } // Cet effet ne dispatche pas d'autre action
+  { dispatch: false }
 );
 
 updateUser$ = createEffect(() =>
   this.actions$.pipe(
     ofType(UserActions.updateUser),
     tap(({ user }) => {
-      // Mise à jour localStorage via le service
       this.storageService.updateUserInLocalStorage(user);
     })
   ),
@@ -128,11 +116,34 @@ deleteUser$ = createEffect(() =>
   this.actions$.pipe(
     ofType(UserActions.deleteUser),
     tap(({ id }) => {
-      // Supprimez l'utilisateur du localStorage
       this.storageService.removeUserFromLocalStorage(id);
       this.storageService.removeFromLocalStorage('currentUser');
     })
   ),
   { dispatch: false }
 );
+
+updateUserPoints$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(UserActions.updateUserPoints),
+    mergeMap(({ userId, points }) => {
+      const users = this.storageService.getArrayFromLocalStorage<User>('users') || [];
+      const updatedUsers = users.map(user =>
+        user.id === userId ? { ...user, points: (user.points || 0) + points } : user
+      );
+
+      this.storageService.saveToLocalStorage('users', updatedUsers);
+
+      let updatedCurrentUser = this.storageService.getFromLocalStorage<User>('currentUser');
+      if (updatedCurrentUser && updatedCurrentUser.id === userId) {
+        updatedCurrentUser = { ...updatedCurrentUser, points: (updatedCurrentUser.points || 0) + points };
+        this.storageService.saveToLocalStorage('currentUser', updatedCurrentUser);
+      }
+
+      return of(UserActions.updateUserPointsSuccess({ userId, points }));
+    }),
+    catchError(error => of(UserActions.updateUserPointsFailure({ error })))
+  )
+);
+
 }

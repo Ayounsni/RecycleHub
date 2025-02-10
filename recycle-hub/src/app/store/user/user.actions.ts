@@ -1,9 +1,7 @@
-// store/user/user.actions.ts
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../shared/models/user';
 
 
-// Charger les utilisateurs
 export const loadUsers = createAction('[User] Load Users');
 export const loadUsersSuccess = createAction(
   '[User] Load Users Success',
@@ -14,7 +12,6 @@ export const loadUsersFailure = createAction(
   props<{ error: string }>()
 );
 
-// Ajouter un utilisateur
 export const addUser = createAction(
   '[User] Add User',
   props<{ user: User }>()
@@ -38,31 +35,41 @@ export const loginUserFailure = createAction(
   props<{ error: string }>()
 );
 
-// user.actions.ts
 export const rehydrateUser = createAction(
   '[User] Rehydrate User',
   props<{ user: User }>()
 );
 export const loadCurrentUser = createAction('[User] Load Current User');
 
-// Déconnexion
 export const logoutUser = createAction('[User] Logout User');
 
 
-// Modifier un utilisateur
 export const updateUser = createAction(
   '[User] Update User',
   props<{ user: User }>()
 );
 
-// Supprimer un utilisateur
 export const deleteUser = createAction(
   '[User] Delete User',
   props<{ id: string }>()
 );
 
-// Sélectionner un utilisateur pour modification
 export const selectUser = createAction(
   '[User] Select User',
   props<{ id: string | null }>()
+);
+
+export const updateUserPoints = createAction(
+  '[User] Update Points',
+  props<{ userId: string; points: number }>()
+);
+
+export const updateUserPointsSuccess = createAction(
+  '[User] Update User Points Success',
+  props<{ userId: string; points: number }>()
+);
+
+export const updateUserPointsFailure = createAction(
+  '[User] Update User Points Failure',
+  props<{ error: string }>()
 );

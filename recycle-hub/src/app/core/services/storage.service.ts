@@ -36,12 +36,10 @@ export class StorageService {
   }
 
   updateUserInLocalStorage(updatedUser: User): void {
-    // Mise à jour de la liste des utilisateurs
     const users = this.getArrayFromLocalStorage<User>('users') || [];
     const updatedUsers = users.map(u => u.id === updatedUser.id ? updatedUser : u);
     this.saveToLocalStorage('users', updatedUsers);
 
-    // Mise à jour de l'utilisateur courant
     this.saveToLocalStorage('currentUser', updatedUser);
   }
 
@@ -50,7 +48,6 @@ export class StorageService {
     const updatedUsers = users.filter(u => u.id !== userId);
     this.saveToLocalStorage('users', updatedUsers);
   
-    // Supprimez également l'utilisateur courant s'il correspond
     const currentUser = this.getFromLocalStorage<User>('currentUser');
     if (currentUser && currentUser.id === userId) {
       this.removeFromLocalStorage('currentUser');

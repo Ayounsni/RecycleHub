@@ -2,9 +2,7 @@
     <div class="max-w-6xl mx-auto px-4 pt-16">
 
   
-      <!-- Carte principale du profil -->
       <div class="bg-white rounded-3xl shadow-2xl overflow-hidden mb-12">
-        <!-- Bannière profil -->
         <div class="h-32 bg-gradient-to-r from-green-200 to-green-400 relative">
             <div *ngIf="(currentUser$ | async)?.role === 'user'" class="flex justify-center pt-9  items-center w-full gap-24">
                 <div class="bg-white py-2 px-5 flex items-center gap-5  rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -29,9 +27,7 @@
           </div>
         </div>
   
-        <!-- Contenu du profil -->
         <div class="pt-20 px-8 pb-8">
-          <!-- En-tête éditable -->
           <div class="flex justify-between items-start mb-8">
             <div>
               <h2 class="text-3xl font-bold text-gray-800">
@@ -57,9 +53,7 @@
         </div>
           </div>
   
-          <!-- Informations du profil -->
           <div *ngIf="!editMode" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Carte Information Personnelle -->
             <div class="bg-green-50 p-6 rounded-2xl">
               <h3 class="text-xl font-semibold text-green-700 mb-4 flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +67,6 @@
               </div>
             </div>
   
-            <!-- Carte Contact -->
             <div class="bg-green-100 p-6 rounded-2xl">
               <h3 class="text-xl font-semibold text-green-700 mb-4 flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,9 +82,7 @@
             </div>
           </div>
   
-          <!-- Formulaire d'édition -->
           <form *ngIf="editMode" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Colonne Gauche -->
             <div class="space-y-6">
               <div>
                 <label class="block text-gray-700 font-medium mb-2">Prénom</label>
@@ -134,7 +125,6 @@
               </div>
             </div>
   
-            <!-- Colonne Droite -->
             <div class="space-y-6">
               <div>
                 <label class="block text-gray-700 font-medium mb-2">Téléphone</label>
@@ -176,7 +166,6 @@
               </div>
             </div>
   
-            <!-- Boutons de soumission -->
             <div class="md:col-span-2 flex justify-end space-x-4">
               <button 
                 type="button"

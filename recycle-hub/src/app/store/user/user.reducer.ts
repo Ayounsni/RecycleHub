@@ -1,7 +1,7 @@
-// store/user/user.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import { UserState, initialUserState } from './user.state';
 import * as UserActions from './user.actions';
+import { User } from '../../shared/models/user';
 
 export const userReducer = createReducer(
   initialUserState,
@@ -56,6 +56,20 @@ export const userReducer = createReducer(
     users: state.users.filter((u) => u.id !== id),
     currentUser: null,
   })),
+  on(UserActions.updateUserPoints, (state, { userId, points }) => {
+    const updateUser = (user: User) => ({
+      ...user,
+      points: (user.points || 0) + points
+    });
+  
+    return {
+      ...state,
+      users: state.users.map(u => u.id === userId ? updateUser(u) : u),
+      currentUser: state.currentUser?.id === userId 
+        ? updateUser(state.currentUser) 
+        : state.currentUser
+    };
+  }),
 
   on(UserActions.selectUser, (state, { id }) => ({
     ...state,

@@ -1,4 +1,3 @@
-// collect-form-modal.component.ts
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CollectRequest } from '../../../shared/models/collectRequest';
@@ -68,7 +67,6 @@ export class CollectFormModalComponent implements OnInit {
     }
   }
 
-// Dans collect-form-modal.component.ts
 formatDate(date: string | Date): string {
   if (date instanceof Date) {
     return date.toISOString().split('T')[0];
@@ -81,13 +79,12 @@ formatDate(date: string | Date): string {
     if (this.collectForm.valid) {
       const formValue = {
         ...this.collectForm.value,
-        date: new Date(this.collectForm.value.date) // ✅ Convertir en Date pour l'envoi
+        date: new Date(this.collectForm.value.date) 
       };
       this.formSubmit.emit(formValue);
 
-      // Écouter les erreurs d'ajout
       this.store.select(selectAddRequestError).pipe(
-        take(1) // Prendre seulement la première valeur émise
+        take(1) 
       ).subscribe(errorType => {
         if (errorType === 'maxRequests') {
           this.errorMessage = "Vous avez déjà 3 demandes en attente ou rejetées";
@@ -97,14 +94,12 @@ formatDate(date: string | Date): string {
         }
 
         if (!errorType) {
-          this.onClose(); // Fermer le modal seulement si la demande est réussie
+          this.onClose(); 
         }
   
-        // Réinitialiser l'erreur après affichage
         this.store.dispatch(resetAddRequestError());
       });
     } else {
-      // Si le formulaire est invalide, marquer tous les champs comme touchés pour afficher les erreurs
       this.collectForm.markAllAsTouched();
     }
   }
